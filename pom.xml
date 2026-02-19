@@ -22,26 +22,14 @@
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit-platform-engine</artifactId>
-            <version>7.15.0</version>
+            <artifactId>cucumber-junit</artifactId>
+            <version>7.34.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-suite</artifactId>
-            <version>1.9.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-engine</artifactId>
-            <version>1.9.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.3</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -49,6 +37,12 @@
             <artifactId>selenium-java</artifactId>
             <version>4.40.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.utem</groupId>
+            <artifactId>utem-reporter-junit5</artifactId>
+            <version>0.1.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

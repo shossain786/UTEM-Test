@@ -1,15 +1,18 @@
 package com.utem.runner;
 
-import io.cucumber.junit.platform.engine.Constants;
-import org.junit.platform.suite.api.ConfigurationParameter;
-import org.junit.platform.suite.api.IncludeEngines;
-import org.junit.platform.suite.api.SelectClasspathResource;
-import org.junit.platform.suite.api.Suite;
+import org.junit.runner.RunWith;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
 
-@Suite
-@IncludeEngines("cucumber")
-@SelectClasspathResource("features")
-@ConfigurationParameter(key = Constants.GLUE_PROPERTY_NAME, value = "com.utem.stepdefs,com.utem.hooks")
-@ConfigurationParameter(key = Constants.PLUGIN_PROPERTY_NAME, value = "pretty,html:target/cucumber-reports/cucumber.html")
+@RunWith(Cucumber.class)
+@CucumberOptions(
+    features = "src/test/resources/features",
+    glue = {"com.utem.stepdefs", "com.utem.hooks"},
+    plugin = {
+        "pretty",
+        "html:target/cucumber-reports/cucumber.html",
+        "com.utem.reporter.junit5.UtemCucumberPlugin"
+    }
+)
 public class TestRunner {
 }

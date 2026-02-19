@@ -6,7 +6,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.Assert.assertEquals;
 
 public class RegistrationSteps extends BaseTest {
     RegistrationPage registrationPage =  new RegistrationPage();
@@ -35,7 +35,7 @@ public class RegistrationSteps extends BaseTest {
     @Then("I should see alert with message {string}")
     public void i_should_see_alert_with_message(String string) {
         String actualMessage = registrationPage.getAlertMessage();
-        Assertions.assertEquals(actualMessage, string);
+        assertEquals(string, actualMessage);
     }
 
     @And("I click on registration button")
