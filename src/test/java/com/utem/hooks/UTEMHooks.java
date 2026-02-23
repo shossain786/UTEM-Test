@@ -4,6 +4,9 @@ import com.utem.base.BaseTest;
 import com.utem.reporter.junit5.WebDriverRegistry;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 
 public class UTEMHooks extends BaseTest {
     @Before
@@ -14,7 +17,17 @@ public class UTEMHooks extends BaseTest {
     }
 
     @After
-    public void after() {
+    public void after(Scenario scenario) {
+        // Attach screenshot to Cucumber HTML report on failure
+        if (scenario.isFailed() && driver != null) {
+            try {
+                byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+                scenario.attach(screenshot, "image/png", "Failure Screenshot");
+            } catch (Exception e) {
+                System.err.println("[UTEMHooks] Screenshot capture failed: " + e.getMessage());
+            }
+        }
+
         WebDriverRegistry.unregister();
         closeBrowser();
     }

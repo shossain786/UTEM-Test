@@ -11,6 +11,7 @@ public class LoginPage extends BaseTest {
     By formsLink = By.linkText("Forms");
     By usernameError = By.id("usernameError");
     By passwordError = By.id("passwordError");
+    By loginSuccess = By.xpath("//div[@id='loginAlert']");
 
     public void login(String user, String pass) {
         driver.findElement(username).sendKeys(user);
@@ -36,14 +37,11 @@ public class LoginPage extends BaseTest {
         driver.findElement(loginBtn).click();
     }
 
-    public void verifySuccessfulLogin() {
-        // Placeholder for assertion
-        // Example: Check for success message or redirect
+    public String loginSuccessMessage() {
+        return driver.findElement(loginSuccess).getText();
     }
 
     public void verifyValidationErrors() {
-        // Placeholder for assertion
-        // Example: Check that error messages are displayed
         try {
             WebElement usernameErrorElement = driver.findElement(usernameError);
             WebElement passwordErrorElement = driver.findElement(passwordError);

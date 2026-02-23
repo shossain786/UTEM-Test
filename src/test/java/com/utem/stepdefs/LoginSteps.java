@@ -5,6 +5,7 @@ import com.utem.pages.LoginPage;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 
 public class LoginSteps extends BaseTest {
     LoginPage loginPage = new LoginPage();
@@ -52,7 +53,8 @@ public class LoginSteps extends BaseTest {
 
     @Then("I should see a successful login or next page")
     public void verify_successful_login() {
-        loginPage.verifySuccessfulLogin();
+        String actualMessage = loginPage.loginSuccessMessage();
+        Assert.assertEquals("Login Successful", actualMessage);
     }
 
     @Then("I should see validation errors for both fields")
@@ -62,7 +64,7 @@ public class LoginSteps extends BaseTest {
 
     @When("I navigate to the login form")
     public void navigate_to_login() {
-        // assume already on page for now
+        System.out.println("I navigate to the login form");
     }
 
     @When("I enter username {string} and password {string}")
