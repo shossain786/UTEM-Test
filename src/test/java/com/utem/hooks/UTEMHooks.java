@@ -1,7 +1,7 @@
 package com.utem.hooks;
 
 import com.utem.base.BaseTest;
-import com.utem.reporter.junit5.WebDriverRegistry;
+import com.utem.reporter.testng.WebDriverRegistry;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;

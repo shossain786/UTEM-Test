@@ -54,7 +54,7 @@ public class LoginSteps extends BaseTest {
     @Then("I should see a successful login or next page")
     public void verify_successful_login() {
         String actualMessage = loginPage.loginSuccessMessage();
-        Assert.assertEquals("Login Successful", actualMessage);
+        Assert.assertEquals("Login successful!", actualMessage);
     }
 
     @Then("I should see validation errors for both fields")

@@ -10,8 +10,7 @@ import io.cucumber.junit.CucumberOptions;
     glue = {"com.utem.stepdefs", "com.utem.hooks"},
     plugin = {
         "pretty",
-        "html:target/cucumber-reports/cucumber.html",
-        "com.utem.reporter.junit5.UtemCucumberPlugin"
+        "html:target/cucumber-reports/cucumber.html"
     }
 )
 public class TestRunner {
