@@ -25,17 +25,17 @@ public class BaseTest {
     public void startBrowser() {
         ChromeOptions options = new ChromeOptions();
 
-        // Check if running in CI/CD environment
-        String ciEnvironment = System.getenv("CI");
-        if (ciEnvironment != null && !ciEnvironment.isEmpty()) {
-            // Headless mode for CI/CD pipelines
+        // Headless if CI env var set OR -Dheadless=true system property passed
+        boolean headless = (System.getenv("CI") != null && !System.getenv("CI").isEmpty())
+                || "true".equalsIgnoreCase(System.getProperty("headless"));
+
+        if (headless) {
             options.addArguments("--headless=new");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
             options.addArguments("--disable-gpu");
             options.addArguments("--window-size=1920,1080");
         } else {
-            // Regular mode for local development
             options.addArguments("--start-maximized");
         }
 
@@ -44,7 +44,7 @@ public class BaseTest {
 
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        if (ciEnvironment == null || ciEnvironment.isEmpty()) {
+        if (!headless) {
             driver.manage().window().maximize();
         }
     }
