@@ -12,6 +12,10 @@
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- UTEM reporter defaults — override any of these with -D on the command line -->
+        <utem.server.url>http://localhost:8080/utem</utem.server.url>
+        <utem.run.label></utem.run.label>
+        <utem.job.name></utem.job.name>
     </properties>
 
     <repositories>
@@ -68,11 +72,9 @@
                         <include>**/*Tests.java</include>
                     </includes>
                     <systemPropertyVariables>
-                        <!-- UTEM server -->
-                        <utem.server.url>http://localhost:8080/utem</utem.server.url>
-                        <!-- Optional: tag this run with a label and/or job name -->
-                        <!-- <utem.run.label>smoke</utem.run.label> -->
-                        <!-- <utem.job.name>my-pipeline</utem.job.name> -->
+                        <utem.server.url>${utem.server.url}</utem.server.url>
+                        <utem.run.label>${utem.run.label}</utem.run.label>
+                        <utem.job.name>${utem.job.name}</utem.job.name>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
