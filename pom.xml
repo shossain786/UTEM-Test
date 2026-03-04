@@ -49,7 +49,7 @@
         </dependency>
         <dependency>
             <groupId>com.utem</groupId>
-            <artifactId>utem-reporter-testng</artifactId>
+            <artifactId>utem-reporter-junit5</artifactId>
             <version>0.1.0</version>
             <scope>test</scope>
         </dependency>
@@ -67,6 +67,13 @@
                         <include>**/*Test.java</include>
                         <include>**/*Tests.java</include>
                     </includes>
+                    <systemPropertyVariables>
+                        <!-- UTEM server -->
+                        <utem.server.url>http://localhost:8080</utem.server.url>
+                        <!-- Optional: tag this run with a label and/or job name -->
+                        <!-- <utem.run.label>smoke</utem.run.label> -->
+                        <!-- <utem.job.name>my-pipeline</utem.job.name> -->
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>
