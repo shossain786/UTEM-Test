@@ -69,7 +69,7 @@
                     </includes>
                     <systemPropertyVariables>
                         <!-- UTEM server -->
-                        <utem.server.url>http://localhost:8080</utem.server.url>
+                        <utem.server.url>http://localhost:8080/utem</utem.server.url>
                         <!-- Optional: tag this run with a label and/or job name -->
                         <!-- <utem.run.label>smoke</utem.run.label> -->
                         <!-- <utem.job.name>my-pipeline</utem.job.name> -->
