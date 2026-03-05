@@ -13,76 +13,36 @@
 | Cucumber | 7.x |
 | JUnit | 4.13.x |
 | Selenium | 4.x (optional — for screenshot capture) |
-| UTEM Server | Running at `http://localhost:8080` |
+| UTEM Server | Running and accessible |
 
 ---
 
-## Step 1 — Download the Reporter JAR
+## Step 1 — Add the Reporter Dependency
 
-Download **`utem-reporter-junit5-0.1.0.jar`** from Google Drive:
-
-[⬇ Download utem-reporter-junit5-0.1.0.jar](https://drive.google.com/file/d/1nhUYETlX0QPoyeXLhxsSb2LHpJTgcwcn/view?usp=sharing)
-
-Place it in your project's local Maven repository at this exact path:
-
-```
-your-project/
-└── repo/
-    └── com/
-        └── utem/
-            └── utem-reporter-junit5/
-                └── 0.1.0/
-                    ├── utem-reporter-junit5-0.1.0.jar
-                    └── utem-reporter-junit5-0.1.0.pom
-```
-
-Create the `.pom` file alongside the JAR with the following content:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.utem</groupId>
-  <artifactId>utem-reporter-junit5</artifactId>
-  <version>0.1.0</version>
-</project>
-```
-
----
-
-## Step 2 — Configure `pom.xml`
-
-### 2a. Register the local repository
-
-```xml
-<repositories>
-    <repository>
-        <id>local-repo</id>
-        <name>Local Repository</name>
-        <url>file://${project.basedir}/repo</url>
-    </repository>
-</repositories>
-```
-
-### 2b. Add the reporter dependency
+The reporter is published on Maven Central. Add it to your `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>com.utem</groupId>
+    <groupId>io.github.shossain786</groupId>
     <artifactId>utem-reporter-junit5</artifactId>
     <version>0.1.0</version>
     <scope>test</scope>
 </dependency>
 ```
 
-### 2c. Configure Surefire with UTEM properties
+> No JAR download or local repository setup needed — Maven resolves it automatically.
 
-Define defaults in `<properties>` and reference them in Surefire. Any property can be overridden at run time with `-D` on the command line.
+---
+
+## Step 2 — Configure `pom.xml`
+
+Define UTEM properties with defaults in `<properties>` and pass them through Surefire. Any property can be overridden at run time with `-D` on the command line.
 
 ```xml
 <properties>
-    <!-- Default values — override with -D on the command line -->
+    <!-- Override with -D on the command line -->
     <utem.server.url>http://localhost:8080/utem</utem.server.url>
+    <utem.run.name></utem.run.name>
     <utem.run.label></utem.run.label>
     <utem.job.name></utem.job.name>
 </properties>
@@ -96,6 +56,7 @@ Define defaults in `<properties>` and reference them in Surefire. Any property c
             <configuration>
                 <systemPropertyVariables>
                     <utem.server.url>${utem.server.url}</utem.server.url>
+                    <utem.run.name>${utem.run.name}</utem.run.name>
                     <utem.run.label>${utem.run.label}</utem.run.label>
                     <utem.job.name>${utem.job.name}</utem.job.name>
                 </systemPropertyVariables>
@@ -167,13 +128,22 @@ public class MyHooks {
 mvn test
 ```
 
+### With a custom run name (appears as the run title in the dashboard)
+```bash
+# PowerShell
+mvn test '-Dutem.run.name=Booking Regression Suite'
+
+# Bash / CMD
+mvn test -Dutem.run.name=BookingRegressionSuite
+```
+
 ### Point to a different UTEM server
 ```bash
 # PowerShell
-mvn test '-Dutem.server.url=http://192.168.1.10:8080/utem'
+mvn test '-Dutem.server.url=http://192.168.1.10:9090/utem'
 
 # Bash / CMD
-mvn test -Dutem.server.url=http://192.168.1.10:8080/utem
+mvn test -Dutem.server.url=http://192.168.1.10:9090/utem
 ```
 
 ### With a job name (groups runs under one pipeline card in the dashboard)
@@ -197,7 +167,7 @@ mvn test '-Dheadless=true'
 
 ### All options combined
 ```bash
-mvn test '-Dutem.server.url=http://myserver:8080/utem' '-Dutem.job.name=Booking' '-Dutem.run.label=smoke' '-Dheadless=true'
+mvn test '-Dutem.run.name=Booking Suite' '-Dutem.server.url=http://myserver:9090/utem' '-Dutem.job.name=Booking' '-Dutem.run.label=smoke' '-Dheadless=true'
 ```
 
 ---
@@ -207,6 +177,7 @@ mvn test '-Dutem.server.url=http://myserver:8080/utem' '-Dutem.job.name=Booking'
 | Property | How to set | Description |
 |----------|-----------|-------------|
 | `utem.server.url` | `pom.xml` or `-D` | UTEM server base URL (default: `http://localhost:8080/utem`) |
+| `utem.run.name` | `pom.xml` or `-D` | Custom name shown as the run title in the dashboard |
 | `utem.run.label` | `pom.xml` or `-D` | Tag this run (e.g. `smoke`, `regression`) |
 | `utem.job.name` | `pom.xml` or `-D` | Pipeline/job name for grouping runs |
 | `headless` | `-D` flag | Set `true` to run Chrome in headless mode |
@@ -216,7 +187,7 @@ mvn test '-Dutem.server.url=http://myserver:8080/utem' '-Dutem.job.name=Booking'
 
 ## What You See in the Dashboard
 
-After running, open `http://localhost:5173` to see:
+After running, open the UTEM dashboard URL to see:
 
 - **Live run progress** — test cases and steps updating in real time via WebSocket
 - **Run detail** — full hierarchy: feature → scenario → step, with pass/fail status and duration
@@ -236,8 +207,6 @@ src/test/java/com/utem/
 ├── runner/         TestRunner.java        – @CucumberOptions entry point
 ├── stepdefs/       *Steps.java            – Step definition classes
 └── pages/          *Page.java             – Page Object Model classes
-
-repo/com/utem/utem-reporter-junit5/0.1.0/ – Local Maven repo for the UTEM JAR
 ```
 
 ---
@@ -249,5 +218,6 @@ repo/com/utem/utem-reporter-junit5/0.1.0/ – Local Maven repo for the UTEM JAR
 | `[UTEM] Event rejected (HTTP 404)` | Check `utem.server.url` ends with `/utem`, not just the port |
 | `[UTEM] Event rejected (HTTP 500)` | Make sure the UTEM server is running; restart it if needed |
 | No run appears in dashboard | Confirm the plugin is listed in `@CucumberOptions(plugin = {...})` |
+| Two runs appear per execution | Ensure reporter version is `0.1.0` or later (duplicate run fix included) |
 | Screenshot not attached | Ensure `WebDriverRegistry.register(driver)` is called in `@Before` |
-| PowerShell `-D` property error | Wrap in single quotes: `'-Dutem.job.name=MyJob'` |
+| PowerShell `-D` property error | Wrap in single quotes: `'-Dutem.run.name=My Suite'` |
