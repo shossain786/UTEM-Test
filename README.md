@@ -25,7 +25,7 @@ The reporter is published on Maven Central. Add it to your `pom.xml`:
 <dependency>
     <groupId>io.github.shossain786</groupId>
     <artifactId>utem-reporter-junit5</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -218,6 +218,6 @@ src/test/java/com/utem/
 | `[UTEM] Event rejected (HTTP 404)` | Check `utem.server.url` ends with `/utem`, not just the port |
 | `[UTEM] Event rejected (HTTP 500)` | Make sure the UTEM server is running; restart it if needed |
 | No run appears in dashboard | Confirm the plugin is listed in `@CucumberOptions(plugin = {...})` |
-| Two runs appear per execution | Ensure reporter version is `0.1.0` or later (duplicate run fix included) |
+| Two runs appear per execution | Ensure reporter version is `0.1.1` or later (duplicate run fix included) |
 | Screenshot not attached | Ensure `WebDriverRegistry.register(driver)` is called in `@Before` |
 | PowerShell `-D` property error | Wrap in single quotes: `'-Dutem.run.name=My Suite'` |
